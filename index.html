@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://www.w3schools.com/w3images/fjords.jpg');
+            background-size: cover;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .video {
+            width: 200px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .video img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .video h3 {
+            margin: 10px 0;
+        }
+        #videoPlayer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        #player {
+            width: 80%;
+            height: 80%;
+        }
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="videoPlayer" class="videoPlayer">
+        <button class="close-button" onclick="closeVideo()">X</button>
+        <iframe id="player" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <h1>Shamsul Haque's Videos</h1>
+    <div class="video-container" id="videoContainer">
+        <!-- Video thumbnails will be generated here -->
+    </div>
+
+    <script>
+        // Array of video URLs (you can add more)
+        const videoLinks = [
+            'https://youtu.be/IExBivh96AE',
+            'https://youtu.be/1ii-UaisDJ8',
+            'https://youtu.be/w3A9r4v6Ui0',
+            'https://youtu.be/9VbT3EErWxU',
+            'https://youtu.be/trvhnFM1SQY',
+            'https://www.youtube.com/live/JePw3GnwJi4',
+            'https://youtu.be/aPuwAzH8iJI',
+            'https://youtu.be/-5Yeph6BS0M',
+            'https://youtu.be/Qe_0x5Jj5z8',
+            'https://youtu.be/1b13TKYbVZc',
+        ];
+
+        // Container for displaying video thumbnails
+        const videoContainer = document.getElementById('videoContainer');
+
+        // Loop through each video URL to generate thumbnails and add to the container
+        videoLinks.forEach((link) => {
+            const videoId = getVideoIdFromUrl(link);
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/0.jpg`;
+
+            const videoElement = document.createElement('div');
+            videoElement.classList.add('video');
+            videoElement.innerHTML = `
+                <img src="${thumbnailUrl}" alt="Video Thumbnail">
+                <h3>Video Title</h3>
+            `;
+
+            // Add click event to play video
+            videoElement.addEventListener('click', () => playVideo(videoId));
+            videoContainer.appendChild(videoElement);
+        });
+
+        // Extract video ID from YouTube URL
+        function getVideoIdFromUrl(url) {
+            const videoId = url.split('v=')[1].split('&')[0];
+            return videoId;
+        }
+
+        // Function to play the selected video
+        function playVideo(videoId) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const player = document.getElementById('player');
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            videoPlayer.style.display = 'flex';
+        }
+
+        // Close the video player
+        function closeVideo() {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const player = document.getElementById('player');
+            player.src = '';
+            videoPlayer.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
